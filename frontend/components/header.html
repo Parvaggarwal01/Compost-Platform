@@ -1,0 +1,85 @@
+<header class="bg-white shadow sticky top-0 z-50">
+  <nav class="container mx-auto px-4 py-3 flex justify-between items-center">
+    <div class="flex items-center">
+      <!-- Logo and brand name -->
+      <a href="../pages/index.html" class="flex items-center">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-8 w-8 text-primary-500"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M8 4v12a4 4 0 0 0 8 0V4M3 12h18M3 16h18M3 20h18"
+          />
+        </svg>
+        <span class="text-xl font-bold text-primary-600 ml-2"
+          >CompostConnect</span
+        >
+      </a>
+    </div>
+    <div class="space-x-6 flex items-center">
+      <a
+        href="http://localhost/compost_platform/frontend/pages/index.html"
+        class="text-gray-700 hover:text-primary-600 font-medium"
+        >Home</a
+      >
+      <a
+        href="http://localhost/compost_platform/frontend/pages/services.html"
+        class="text-gray-700 hover:text-primary-600 font-medium"
+        >Services</a
+      >
+      <a
+        href="http://localhost/compost_platform/frontend/pages/profile.html"
+        id="profile-link"
+        class="text-gray-700 hover:text-primary-600 font-medium hidden"
+        >Profile</a
+      >
+      <span id="auth-links">
+        <a
+          href="http://localhost/compost_platform/frontend/pages/auth/login.html"
+          class="text-gray-700 hover:text-primary-600 font-medium"
+          >Login</a
+        >
+        <a
+          href="http://localhost/compost_platform/frontend/pages/auth/register.html"
+          class="bg-primary-500 hover:bg-primary-600 text-white py-2 px-4 rounded-lg font-medium transition-all duration-300 ease-in-out"
+          >Register</a
+        >
+      </span>
+      <span id="user-links" class="hidden">
+        <a
+          id="dashboard-link"
+          href="#"
+          class="text-gray-700 hover:text-primary-600 font-medium"
+          >Dashboard</a
+        >
+        <a
+          href="#"
+          id="logout"
+          class="text-red-600 hover:text-red-700 font-medium flex items-center"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-4 w-4 mr-1"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+            />
+          </svg>
+          Logout
+        </a>
+      </span>
+    </div>
+  </nav>
+</header>

@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Service - CompostConnect</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'compost-green': '#2E7D32',
+                        'compost-brown': '#795548',
+                        'compost-light': '#A5D6A7',
+                        'compost-dark': '#1B5E20',
+                        'compost-accent': '#FBC02D'
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="../../assets/css/styles.css" rel="stylesheet">
+    <script src="../../assets/js/jquery.min.js"></script>
+    <script src="../../assets/js/app.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50 font-[Poppins]">
+    <div id="header"></div>
+
+    <div class="min-h-screen">
+        <section class="py-10">
+            <div class="container mx-auto px-4">
+                <div class="flex flex-col md:flex-row items-start justify-between mb-8">
+                    <div>
+                        <h2 class="text-3xl font-bold text-compost-dark mb-2">Create Composting Service</h2>
+                        <p class="text-gray-600">Share your sustainable waste management solutions with the community</p>
+                    </div>
+                    <a href="dashboard.html" class="mt-4 md:mt-0 flex items-center text-compost-green hover:text-compost-dark transition-colors">
+                        <i class="fas fa-arrow-left mr-2"></i> Back to Dashboard
+                    </a>
+                </div>
+
+                <div class="bg-white rounded-xl p-8 shadow-md border-t-4 border-compost-green max-w-2xl mx-auto">
+                    <div class="flex items-center mb-6">
+                        <div class="bg-compost-light rounded-full p-3 mr-4">
+                            <i class="fas fa-leaf text-compost-dark text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-compost-dark">Service Details</h3>
+                            <p class="text-gray-600 text-sm">Your service will be reviewed by our administrators before publication</p>
+                        </div>
+                    </div>
+
+                    <form id="create-service-form">
+                        <div class="mb-5">
+                            <label for="service_type" class="block text-gray-700 mb-1 font-medium">Service Type</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                    <i class="fas fa-recycle text-gray-400"></i>
+                                </div>
+                                <select id="service_type" name="service_type" class="w-full pl-10 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-compost-green" required>
+                                    <option value="composting">Residential Composting</option>
+                                    <option value="recycling">Recycling</option>
+                                    <option value="waste_collection">Waste Collection</option>
+                                    <option value="consulting">Sustainability Consulting</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="mb-5">
+                            <label for="title" class="block text-gray-700 mb-1 font-medium">Service Title</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                    <i class="fas fa-heading text-gray-400"></i>
+                                </div>
+                                <input type="text" id="title" name="title" class="w-full pl-10 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-compost-green" placeholder="Enter a descriptive service title" required>
+                            </div>
+                        </div>
+
+                        <div class="mb-5">
+                            <label for="description" class="block text-gray-700 mb-1 font-medium">Description</label>
+                            <div class="relative">
+                                <div class="absolute top-3 left-3 pointer-events-none">
+                                    <i class="fas fa-align-left text-gray-400"></i>
+                                </div>
+                                <textarea id="description" name="description" rows="4" class="w-full pl-10 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-compost-green" placeholder="Describe your composting service in detail"></textarea>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-1 italic">Include details about what materials you accept, your process, and environmental benefits</p>
+                        </div>
+
+                        <div class="mb-5">
+                            <label for="location" class="block text-gray-700 mb-1 font-medium">Service Location</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                    <i class="fas fa-map-marker-alt text-gray-400"></i>
+                                </div>
+                                <input type="text" id="location" name="location" class="w-full pl-10 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-compost-green" placeholder="City, State or Region" required>
+                            </div>
+                        </div>
+
+                        <div class="mb-6">
+                            <label for="price" class="block text-gray-700 mb-1 font-medium">Price ($)</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                    <i class="fas fa-dollar-sign text-gray-400"></i>
+                                </div>
+                                <input type="number" id="price" name="price" step="0.01" min="0" class="w-full pl-10 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-compost-green" placeholder="Enter service price" required>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="w-full bg-compost-green hover:bg-compost-dark text-white font-medium py-3 px-4 rounded-lg transition-colors duration-300 flex items-center justify-center">
+                            <i class="fas fa-plus-circle mr-2"></i> Create Composting Service
+                        </button>
+                    </form>
+
+                    <div id="create-service-messages" class="mt-4"></div>
+
+                    <div class="mt-6 pt-6 border-t border-gray-100">
+                        <div class="flex items-start">
+                            <div class="bg-compost-light rounded-full p-2 mr-3 flex-shrink-0">
+                                <i class="fas fa-info-circle text-compost-dark"></i>
+                            </div>
+                            <p class="text-sm text-gray-600">
+                                Your service will help connect users with sustainable waste management solutions. Our team will review your submission within 24-48 hours.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer class="bg-gray-800 text-white py-10">
+        <div class="container mx-auto px-4">
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+            <div>
+              <h3 class="text-lg font-semibold mb-4 text-primary-300">
+                CompostConnect
+              </h3>
+              <p class="text-gray-400 mb-4">
+                Connecting communities with sustainable waste management solutions
+                since 2023.
+              </p>
+              <div class="flex space-x-4">
+                <a href="#" class="text-gray-400 hover:text-primary-300">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-6 w-6"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.325v-21.35c0-.732-.593-1.325-1.325-1.325z"
+                    />
+                  </svg>
+                </a>
+                <a href="#" class="text-gray-400 hover:text-primary-300">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-6 w-6"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"
+                    />
+                  </svg>
+                </a>
+                <a href="#" class="text-gray-400 hover:text-primary-300">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-6 w-6"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"
+                    />
+                  </svg>
+                </a>
+              </div>
+            </div>
+            <div>
+              <h3 class="text-lg font-semibold mb-4 text-primary-300">Services</h3>
+              <ul class="space-y-2">
+                <li>
+                  <a href="#" class="text-gray-400 hover:text-primary-300"
+                    >Residential Composting</a
+                  >
+                </li>
+                <li>
+                  <a href="#" class="text-gray-400 hover:text-primary-300"
+                    >Commercial Solutions</a
+                  >
+                </li>
+                <li>
+                  <a href="#" class="text-gray-400 hover:text-primary-300"
+                    >Community Gardens</a
+                  >
+                </li>
+                <li>
+                  <a href="#" class="text-gray-400 hover:text-primary-300"
+                    >Compost Education</a
+                  >
+                </li>
+              </ul>
+            </div>
+            <div>
+              <h3 class="text-lg font-semibold mb-4 text-primary-300">Company</h3>
+              <ul class="space-y-2">
+                <li>
+                  <a href="#" class="text-gray-400 hover:text-primary-300"
+                    >About Us</a
+                  >
+                </li>
+                <li>
+                  <a href="#" class="text-gray-400 hover:text-primary-300"
+                    >Our Team</a
+                  >
+                </li>
+                <li>
+                  <a href="#" class="text-gray-400 hover:text-primary-300">Blog</a>
+                </li>
+                <li>
+                  <a href="#" class="text-gray-400 hover:text-primary-300"
+                    >Contact Us</a
+                  >
+                </li>
+              </ul>
+            </div>
+            <div>
+              <h3 class="text-lg font-semibold mb-4 text-primary-300">Newsletter</h3>
+              <p class="text-gray-400 mb-4">
+                Stay updated with the latest composting tips and news.
+              </p>
+              <form class="flex">
+                <input
+                  type="email"
+                  placeholder="Your email"
+                  class="px-4 py-2 w-full rounded-l-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                />
+                <button
+                  type="submit"
+                  class="bg-primary-500 text-white px-4 py-2 rounded-r-lg hover:bg-primary-600 transition-colors duration-300"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-5 w-5"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+                </button>
+              </form>
+            </div>
+          </div>
+          <div
+            class="border-t border-gray-700 pt-6 flex flex-col md:flex-row justify-between items-center"
+          >
+            <p>© 2025 CompostConnect. All rights reserved.</p>
+            <div class="mt-4 md:mt-0 space-x-6">
+              <a href="#" class="text-gray-400 hover:text-primary-300"
+                >Privacy Policy</a
+              >
+              <a href="#" class="text-gray-400 hover:text-primary-300"
+                >Terms of Service</a
+              >
+              <a href="#" class="text-gray-400 hover:text-primary-300"
+                >Cookie Policy</a
+              >
+            </div>
+          </div>
+        </div>
+      </footer>
+
+</body>
+</html>

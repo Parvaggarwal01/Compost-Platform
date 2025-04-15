@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Services - CompostConnect</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              "eco-green": {
+                100: "#e6f5e6",
+                200: "#c2e5c2",
+                300: "#9fd59f",
+                400: "#7bc47b",
+                500: "#57b457",
+                600: "#449944",
+                700: "#367d36",
+                800: "#286228",
+                900: "#1a461a",
+              },
+              "soil-brown": {
+                100: "#f5f0e6",
+                200: "#e6dbc2",
+                300: "#d6c69e",
+                400: "#c7b17b",
+                500: "#b79c57",
+                600: "#997d44",
+                700: "#7d6436",
+                800: "#624a28",
+                900: "#46351a",
+              },
+              primary: {
+                300: "#9fd59f",
+                500: "#57b457",
+                600: "#449944",
+              },
+            },
+          },
+        },
+      };
+    </script>
+    <link href="../assets/css/styles.css" rel="stylesheet" />
+    <script src="../assets/js/jquery.min.js"></script>
+    <script src="../assets/js/app.js"></script>
+    <style>
+      .eco-gradient {
+        background: linear-gradient(135deg, #57b457 0%, #367d36 100%);
+      }
+      .card-shadow {
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      }
+      .focus-ring:focus {
+        box-shadow: 0 0 0 3px rgba(87, 180, 87, 0.3);
+      }
+      .service-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+      .service-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+      }
+      .leaf-pattern {
+        background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2357b457' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      }
+      .hero-section {
+        position: relative;
+        overflow: hidden;
+      }
+      #particles-js {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 1;
+      }
+      .hero-content {
+        position: relative;
+        z-index: 2;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50 font-sans">
+    <div id="header"></div>
+
+    <div class="min-h-screen">
+      <!-- Hero Section -->
+      <section
+        class="py-16 bg-eco-green-600 text-white leaf-pattern hero-section"
+      >
+        <div id="particles-js"></div>
+        <div class="container mx-auto px-4 hero-content">
+          <div class="max-w-3xl mx-auto text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-6">
+              Find Composting Services Near You
+            </h1>
+            <p class="text-xl mb-8">
+              Connect with local providers offering sustainable waste management
+              solutions for your home, business, or community
+            </p>
+            <div class="bg-white rounded-lg p-6 shadow-lg">
+              <div class="flex flex-col md:flex-row gap-4 mb-4">
+                <div class="flex-1">
+                  <label
+                    for="location-filter"
+                    class="block text-gray-700 font-medium mb-1 text-left"
+                    >Location</label
+                  >
+                  <input
+                    type="text"
+                    id="location-filter"
+                    placeholder="Enter city or region"
+                    class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-eco-green-500 focus-ring text-gray-700"
+                  />
+                </div>
+                <div class="flex-1">
+                  <label
+                    for="service-type-filter"
+                    class="block text-gray-700 font-medium mb-1 text-left"
+                    >Service Type</label
+                  >
+                  <select
+                    id="service-type-filter"
+                    class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-eco-green-500 focus-ring appearance-none bg-white text-gray-700"
+                  >
+                    <option value="">All Types</option>
+                    <option value="composting">Composting</option>
+                    <option value="recycling">Recycling</option>
+                    <option value="waste_collection">Waste Collection</option>
+                    <option value="consulting">Consulting</option>
+                  </select>
+                </div>
+                <div class="md:self-end">
+                  <button
+                    id="filter-btn"
+                    class="w-full md:w-auto py-3 px-6 text-white font-medium rounded-md eco-gradient hover:opacity-90 transition-opacity focus:outline-none focus:ring-2 focus:ring-eco-green-500 focus:ring-offset-2 flex items-center justify-center"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="h-5 w-5 mr-2"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                      />
+                    </svg>
+                    Find Services
+                  </button>
+                </div>
+              </div>
+              <div id="services-messages" class="text-left"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="py-12 bg-gray-50">
+        <div class="container mx-auto px-4">
+          <div class="flex justify-between items-center mb-10">
+            <h2 class="text-3xl font-bold text-eco-green-700">
+              Available Services
+            </h2>
+            <div class="flex items-center text-gray-500 text-sm">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5 mr-1"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              <span>All services are subject to provider approval</span>
+            </div>
+          </div>
+
+          <!-- Service Listings -->
+          <div
+            id="services-list"
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          ></div>
+
+          <!-- No Results Message -->
+          <div
+            id="no-services"
+            class="hidden bg-white border border-eco-green-200 rounded-lg p-10 text-center"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-16 w-16 text-eco-green-300 mx-auto mb-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            <h3 class="text-xl font-semibold text-gray-700 mb-2">
+              No services found
+            </h3>
+            <p class="text-gray-500 mb-4">
+              Try adjusting your search criteria or check back later
+            </p>
+            <button
+              onclick="location.reload()"
+              class="py-2 px-6 bg-eco-green-500 text-white rounded-md hover:bg-eco-green-600 transition-colors"
+            >
+              Reset Search
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Service Categories -->
+      <section class="py-12 bg-white">
+        <div class="container mx-auto px-4">
+          <h2 class="text-3xl font-bold text-center text-eco-green-700 mb-10">
+            Our Composting Solutions
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <!-- Category 1 -->
+            <div
+              class="bg-eco-green-50 rounded-lg p-6 text-center border-b-4 border-eco-green-500 card-shadow"
+            >
+              <div
+                class="w-16 h-16 rounded-full flex items-center justify-center bg-eco-green-100 text-eco-green-600 mx-auto mb-4"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-8 w-8"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+                  />
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold text-eco-green-700 mb-2">
+                Residential
+              </h3>
+              <p class="text-gray-600 mb-4">
+                Home composting services, pickup programs, and backyard
+                solutions
+              </p>
+              <a
+                href="#residential"
+                class="text-eco-green-600 font-medium hover:text-eco-green-700"
+                >Learn More</a
+              >
+            </div>
+
+            <!-- Category 2 -->
+            <div
+              class="bg-eco-green-50 rounded-lg p-6 text-center border-b-4 border-eco-green-500 card-shadow"
+            >
+              <div
+                class="w-16 h-16 rounded-full flex items-center justify-center bg-eco-green-100 text-eco-green-600 mx-auto mb-4"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-8 w-8"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                  />
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold text-eco-green-700 mb-2">
+                Commercial
+              </h3>
+              <p class="text-gray-600 mb-4">
+                Solutions for businesses, restaurants, hotels, and office spaces
+              </p>
+              <a
+                href="#commercial"
+                class="text-eco-green-600 font-medium hover:text-eco-green-700"
+                >Learn More</a
+              >
+            </div>
+
+            <!-- Category 3 -->
+            <div
+              class="bg-eco-green-50 rounded-lg p-6 text-center border-b-4 border-eco-green-500 card-shadow"
+            >
+              <div
+                class="w-16 h-16 rounded-full flex items-center justify-center bg-eco-green-100 text-eco-green-600 mx-auto mb-4"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-8 w-8"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                  />
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold text-eco-green-700 mb-2">
+                Community
+              </h3>
+              <p class="text-gray-600 mb-4">
+                Gardens, neighborhood programs, and community-wide initiatives
+              </p>
+              <a
+                href="#community"
+                class="text-eco-green-600 font-medium hover:text-eco-green-700"
+                >Learn More</a
+              >
+            </div>
+
+            <!-- Category 4 -->
+            <div
+              class="bg-eco-green-50 rounded-lg p-6 text-center border-b-4 border-eco-green-500 card-shadow"
+            >
+              <div
+                class="w-16 h-16 rounded-full flex items-center justify-center bg-eco-green-100 text-eco-green-600 mx-auto mb-4"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-8 w-8"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path d="M12 14l9-5-9-5-9 5 9 5z" />
+                  <path
+                    d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"
+                  />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"
+                  />
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold text-eco-green-700 mb-2">
+                Education
+              </h3>
+              <p class="text-gray-600 mb-4">
+                Workshops, training, consulting, and educational programs
+              </p>
+              <a
+                href="#education"
+                class="text-eco-green-600 font-medium hover:text-eco-green-700"
+                >Learn More</a
+              >
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Benefits Section -->
+      <section class="py-12 bg-soil-brown-100">
+        <div class="container mx-auto px-4">
+          <h2 class="text-3xl font-bold text-center text-soil-brown-800 mb-10">
+            Benefits of Composting
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Benefit 1 -->
+            <div class="bg-white rounded-lg p-6 card-shadow service-card">
+              <div
+                class="w-14 h-14 rounded-full flex items-center justify-center bg-eco-green-100 text-eco-green-600 mb-4"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-7 w-7"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064"
+                  />
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold text-soil-brown-700 mb-2">
+                Reduces Carbon Footprint
+              </h3>
+              <p class="text-gray-600">
+                By composting, you help reduce methane emissions from landfills
+                and lower your carbon footprint.
+              </p>
+            </div>
+
+            <!-- Benefit 2 -->
+            <div class="bg-white rounded-lg p-6 card-shadow service-card">
+              <div
+                class="w-14 h-14 rounded-full flex items-center justify-center bg-eco-green-100 text-eco-green-600 mb-4"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-7 w-7"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"
+                  />
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold text-soil-brown-700 mb-2">
+                Enriches Soil
+              </h3>
+              <p class="text-gray-600">
+                Compost adds essential nutrients to soil, improves soil
+                structure, and helps retain moisture for plants.
+              </p>
+            </div>
+
+            <!-- Benefit 3 -->
+            <div class="bg-white rounded-lg p-6 card-shadow service-card">
+              <div
+                class="w-14 h-14 rounded-full flex items-center justify-center bg-eco-green-100 text-eco-green-600 mb-4"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-7 w-7"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"
+                  />
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold text-soil-brown-700 mb-2">
+                Reduces Waste
+              </h3>
+              <p class="text-gray-600">
+                Up to 30% of household waste can be composted, reducing landfill
+                use and waste management costs.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Become a Provider CTA -->
+      <section class="py-16 eco-gradient text-white">
+        <div class="container mx-auto px-4 text-center">
+          <h2 class="text-3xl font-bold mb-4">
+            Are You a Composting Service Provider?
+          </h2>
+          <p class="text-xl max-w-2xl mx-auto mb-8">
+            Join our growing network of sustainability-focused service providers
+            and connect with customers in your area.
+          </p>
+          <div class="flex flex-wrap justify-center gap-4">
+            <a
+              href="/compost_platform/frontend/pages/auth/register.html"
+              class="py-3 px-6 bg-white text-eco-green-700 font-medium rounded-md hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-eco-green-600"
+              >Register as Provider</a
+            >
+            <a
+              href="/compost_platform/frontend/pages/about.html"
+              class="py-3 px-6 border-2 border-white text-white font-medium rounded-md hover:bg-white hover:text-eco-green-700 transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-eco-green-600"
+              >Learn More</a
+            >
+          </div>
+        </div>
+      </section>
+    </div>
+    <footer class="bg-gray-800 text-white py-10">
+      <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+          <div>
+            <h3 class="text-lg font-semibold mb-4 text-primary-300">
+              CompostConnect
+            </h3>
+            <p class="text-gray-400 mb-4">
+              Connecting communities with sustainable waste management solutions
+              since 2023.
+            </p>
+            <div class="flex space-x-4">
+              <a href="#" class="text-gray-400 hover:text-primary-300">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-6 w-6"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.325v-21.35c0-.732-.593-1.325-1.325-1.325z"
+                  />
+                </svg>
+              </a>
+              <a href="#" class="text-gray-400 hover:text-primary-300">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-6 w-6"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"
+                  />
+                </svg>
+              </a>
+              <a href="#" class="text-gray-400 hover:text-primary-300">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-6 w-6"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"
+                  />
+                </svg>
+              </a>
+            </div>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold mb-4 text-primary-300">
+              Services
+            </h3>
+            <ul class="space-y-2">
+              <li>
+                <a href="#" class="text-gray-400 hover:text-primary-300"
+                  >Residential Composting</a
+                >
+              </li>
+              <li>
+                <a href="#" class="text-gray-400 hover:text-primary-300"
+                  >Commercial Solutions</a
+                >
+              </li>
+              <li>
+                <a href="#" class="text-gray-400 hover:text-primary-300"
+                  >Community Gardens</a
+                >
+              </li>
+              <li>
+                <a href="#" class="text-gray-400 hover:text-primary-300"
+                  >Compost Education</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold mb-4 text-primary-300">Company</h3>
+            <ul class="space-y-2">
+              <li>
+                <a href="#" class="text-gray-400 hover:text-primary-300"
+                  >About Us</a
+                >
+              </li>
+              <li>
+                <a href="#" class="text-gray-400 hover:text-primary-300"
+                  >Our Team</a
+                >
+              </li>
+              <li>
+                <a href="#" class="text-gray-400 hover:text-primary-300"
+                  >Blog</a
+                >
+              </li>
+              <li>
+                <a href="#" class="text-gray-400 hover:text-primary-300"
+                  >Contact Us</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold mb-4 text-primary-300">
+              Newsletter
+            </h3>
+            <p class="text-gray-400 mb-4">
+              Stay updated with the latest composting tips and news.
+            </p>
+            <form class="flex">
+              <input
+                type="email"
+                placeholder="Your email"
+                class="px-4 py-2 w-full rounded-l-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+              />
+              <button
+                type="submit"
+                class="bg-primary-500 text-white px-4 py-2 rounded-r-lg hover:bg-primary-600 transition-colors duration-300"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              </button>
+            </form>
+          </div>
+        </div>
+        <div
+          class="border-t border-gray-700 pt-6 flex flex-col md:flex-row justify-between items-center"
+        >
+          <p>© 2025 CompostConnect. All rights reserved.</p>
+          <div class="mt-4 md:mt-0 space-x-6">
+            <a href="#" class="text-gray-400 hover:text-primary-300"
+              >Privacy Policy</a
+            >
+            <a href="#" class="text-gray-400 hover:text-primary-300"
+              >Terms of Service</a
+            >
+            <a href="#" class="text-gray-400 hover:text-primary-300"
+              >Cookie Policy</a
+            >
+          </div>
+        </div>
+      </div>
+    </footer>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Load particles.js configuration
+        particlesJS("particles-js", {
+          particles: {
+            number: {
+              value: 80,
+              density: {
+                enable: true,
+                value_area: 800,
+              },
+            },
+            color: {
+              value: "#ffffff",
+            },
+            shape: {
+              type: ["circle", "triangle", "edge"],
+              stroke: {
+                width: 0,
+                color: "#000000",
+              },
+              polygon: {
+                nb_sides: 5,
+              },
+            },
+            opacity: {
+              value: 0.3,
+              random: false,
+              anim: {
+                enable: false,
+                speed: 1,
+                opacity_min: 0.1,
+                sync: false,
+              },
+            },
+            size: {
+              value: 4,
+              random: true,
+              anim: {
+                enable: false,
+                speed: 40,
+                size_min: 0.1,
+                sync: false,
+              },
+            },
+            line_linked: {
+              enable: true,
+              distance: 150,
+              color: "#ffffff",
+              opacity: 0.2,
+              width: 1,
+            },
+            move: {
+              enable: true,
+              speed: 2,
+              direction: "none",
+              random: false,
+              straight: false,
+              out_mode: "out",
+              bounce: false,
+              attract: {
+                enable: false,
+                rotateX: 600,
+                rotateY: 1200,
+              },
+            },
+          },
+          interactivity: {
+            detect_on: "canvas",
+            events: {
+              onhover: {
+                enable: true,
+                mode: "grab",
+              },
+              onclick: {
+                enable: true,
+                mode: "push",
+              },
+              resize: true,
+            },
+            modes: {
+              grab: {
+                distance: 140,
+                line_linked: {
+                  opacity: 0.5,
+                },
+              },
+              bubble: {
+                distance: 400,
+                size: 40,
+                duration: 2,
+                opacity: 8,
+                speed: 3,
+              },
+              repulse: {
+                distance: 200,
+                duration: 0.4,
+              },
+              push: {
+                particles_nb: 4,
+              },
+              remove: {
+                particles_nb: 2,
+              },
+            },
+          },
+          retina_detect: true,
+        });
+      });
+    </script>
+  </body>
+</html>

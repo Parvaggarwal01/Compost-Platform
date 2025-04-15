@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Service - CompostConnect</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'compost-green': '#2E7D32',
+                        'compost-brown': '#795548',
+                        'compost-light': '#A5D6A7',
+                        'compost-dark': '#1B5E20',
+                        'compost-accent': '#FBC02D'
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="../../assets/css/styles.css" rel="stylesheet">
+    <script src="../../assets/js/jquery.min.js"></script>
+    <script src="../../assets/js/app.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50 font-[Poppins]">
+    <div id="header"></div>
+
+    <div class="min-h-screen">
+        <section class="py-10">
+            <div class="container mx-auto px-4">
+                <div class="flex flex-col md:flex-row items-start justify-between mb-8">
+                    <div>
+                        <h2 class="text-3xl font-bold text-compost-dark mb-2">Edit Composting Service</h2>
+                        <p class="text-gray-600">Update your sustainable waste management solution</p>
+                    </div>
+                    <a href="dashboard.html" class="mt-4 md:mt-0 flex items-center text-compost-green hover:text-compost-dark transition-colors">
+                        <i class="fas fa-arrow-left mr-2"></i> Back to Dashboard
+                    </a>
+                </div>
+
+                <div class="bg-white rounded-xl p-8 shadow-md border-t-4 border-compost-brown max-w-2xl mx-auto">
+                    <div class="flex items-center mb-6">
+                        <div class="bg-compost-light rounded-full p-3 mr-4">
+                            <i class="fas fa-edit text-compost-dark text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-compost-dark">Update Service Details</h3>
+                            <p class="text-gray-600 text-sm">Your service modifications will be reviewed by our administrators</p>
+                        </div>
+                    </div>
+
+                    <form id="edit-service-form">
+                        <input type="hidden" id="service_id" name="service_id">
+
+                        <div class="mb-5">
+                            <label for="service_type" class="block text-gray-700 mb-1 font-medium">Service Type</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                    <i class="fas fa-recycle text-gray-400"></i>
+                                </div>
+                                <select id="service_type" name="service_type" class="w-full pl-10 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-compost-green" required>
+                                    <option value="composting">Residential Composting</option>
+                                    <option value="commercial_composting">Commercial Composting</option>
+                                    <option value="organic_collection">Organic Waste Collection</option>
+                                    <option value="compost_equipment">Composting Equipment</option>
+                                    <option value="composting_workshop">Composting Workshop</option>
+                                    <option value="consulting">Sustainability Consulting</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="mb-5">
+                            <label for="title" class="block text-gray-700 mb-1 font-medium">Service Title</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                    <i class="fas fa-heading text-gray-400"></i>
+                                </div>
+                                <input type="text" id="title" name="title" class="w-full pl-10 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-compost-green" required>
+                            </div>
+                        </div>
+
+                        <div class="mb-5">
+                            <label for="description" class="block text-gray-700 mb-1 font-medium">Description</label>
+                            <div class="relative">
+                                <div class="absolute top-3 left-3 pointer-events-none">
+                                    <i class="fas fa-align-left text-gray-400"></i>
+                                </div>
+                                <textarea id="description" name="description" rows="4" class="w-full pl-10 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-compost-green"></textarea>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-1 italic">Describe your composting process, accepted materials, and environmental benefits</p>
+                        </div>
+
+                        <div class="mb-5">
+                            <label for="location" class="block text-gray-700 mb-1 font-medium">Service Location</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                    <i class="fas fa-map-marker-alt text-gray-400"></i>
+                                </div>
+                                <input type="text" id="location" name="location" class="w-full pl-10 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-compost-green" required>
+                            </div>
+                        </div>
+
+                        <div class="mb-6">
+                            <label for="price" class="block text-gray-700 mb-1 font-medium">Price ($)</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                    <i class="fas fa-dollar-sign text-gray-400"></i>
+                                </div>
+                                <input type="number" id="price" name="price" step="0.01" min="0" class="w-full pl-10 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-compost-green" required>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between">
+                            <a href="dashboard.html" class="text-compost-brown hover:text-compost-dark transition-colors">
+                                Cancel
+                            </a>
+                            <button type="submit" class="bg-compost-brown hover:bg-compost-dark text-white font-medium py-3 px-6 rounded-lg transition-colors duration-300 flex items-center justify-center">
+                                <i class="fas fa-save mr-2"></i> Update Service
+                            </button>
+                        </div>
+                    </form>
+
+                    <div id="edit-service-messages" class="mt-4"></div>
+
+                    <div class="mt-6 pt-6 border-t border-gray-100">
+                        <div class="flex items-start">
+                            <div class="bg-compost-light rounded-full p-2 mr-3 flex-shrink-0">
+                                <i class="fas fa-info-circle text-compost-dark"></i>
+                            </div>
+                            <p class="text-sm text-gray-600">
+                                Your service information helps users find sustainable waste management solutions that match their needs. Keep your details accurate and comprehensive.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div id="footer"></div>
+</body>
+</html>

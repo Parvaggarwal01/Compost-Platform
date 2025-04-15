@@ -1,0 +1,19 @@
+
+
+
+/* Custom styles */
+body {
+    font-family: 'Poppins', sans-serif;
+}
+
+.green-gradient {
+    background: linear-gradient(90deg, #2E7D32, #4CAF50);
+}
+
+.card-shadow {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary {
+    @apply bg-green-600 text-white px-6 py-2 rounded-full hover:bg-green-700 transition;
+}
