@@ -2,3 +2,16 @@ RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ index.php?url=$1 [QSA,L]
+# Redirect root URL to index.html
+RewriteRule ^$ frontend/pages/index.html [L]
+
+# Route API requests to index.php
+RewriteCond %{REQUEST_URI} ^/api/
+RewriteRule ^api/(.*)$ index.php [L]
+
+# Serve static files directly (CSS, JS, images, etc.)
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^(.*)$ $1 [L]
+
+# Fallback to index.html for other routes
+RewriteRule ^(.*)$ frontend/pages/index.html [L]
