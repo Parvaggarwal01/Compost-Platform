@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Service Requests - CompostConnect</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Basic Tailwind config (can be expanded)
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        "compost-green": "#2E7D32",
+                        "compost-brown": "#795548",
+                        "compost-light": "#A5D6A7",
+                        "compost-dark": "#1B5E20",
+                        "compost-accent": "#FBC02D",
+                    },
+                },
+            },
+        };
+    </script>
+    <!-- Link to your main CSS file if you have one -->
+    <link href="../../assets/css/styles.css" rel="stylesheet" />
+    <!-- jQuery -->
+    <script src="../../assets/js/jquery.min.js"></script>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        /* Custom styles for status badges for better readability */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25em 0.6em;
+            font-size: 0.75rem; /* text-xs */
+            font-weight: 500; /* font-medium */
+            line-height: 1;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: baseline;
+            border-radius: 0.375rem; /* rounded-md */
+        }
+        .status-pending { background-color: #FEF3C7; color: #92400E; } /* bg-yellow-100 text-yellow-800 */
+        .status-accepted, .status-in-progress { background-color: #DBEAFE; color: #1E40AF; } /* bg-blue-100 text-blue-800 */
+        .status-completed { background-color: #D1FAE5; color: #065F46; } /* bg-green-100 text-green-800 */
+        .status-cancelled { background-color: #FEE2E2; color: #991B1B; } /* bg-red-100 text-red-800 */
+        .status-unknown { background-color: #F3F4F6; color: #374151; } /* bg-gray-100 text-gray-800 */
+
+        .card-shadow {
+             box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .btn {
+            padding: 0.5rem 1rem; /* py-2 px-4 */
+            border-radius: 0.375rem; /* rounded-md */
+            font-size: 0.875rem; /* text-sm */
+            font-weight: 500; /* font-medium */
+            transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        .btn-primary { background-color: #2E7D32; color: white; } /* compost-green */
+        .btn-primary:hover { background-color: #1B5E20; } /* compost-dark */
+        .btn-danger { background-color: #EF4444; color: white; } /* red-500 */
+        .btn-danger:hover { background-color: #DC2626; } /* red-600 */
+        .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+    </style>
+</head>
+<body class="bg-gray-100 font-[Poppins]">
+
+    <!-- Header Placeholder -->
+    <div id="header"></div>
+
+    <div class="container mx-auto px-4 py-8 min-h-screen">
+        <h2 class="text-3xl font-bold text-compost-dark mb-6">My Service Requests</h2>
+
+        <!-- Message Area -->
+        <div id="user-messages" class="mb-6"></div>
+
+        <!-- Service Requests Section -->
+        <div class="bg-white rounded-lg card-shadow p-6">
+            <h3 class="text-xl font-semibold text-compost-dark mb-4 border-b pb-2">
+                <i class="fas fa-list-alt mr-2 text-compost-green"></i>Your Requests
+            </h3>
+
+            <!-- Loading Indicator -->
+            <div id="services-loading" class="text-center py-8">
+                <div class="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-r-2 border-b-2 border-compost-green"></div>
+                <p class="text-gray-500 mt-2">Loading your service requests...</p>
+            </div>
+
+            <!-- No Requests Message -->
+            <div id="no-requests" class="text-center py-8 hidden">
+                <div class="mb-4">
+                    <i class="fas fa-clipboard-list text-gray-300 text-5xl"></i>
+                </div>
+                <h4 class="text-xl font-semibold text-gray-600">No service requests yet</h4>
+                <p class="text-gray-500 mt-2">You haven't requested any services.</p>
+                <a href="../services.html" class="inline-block mt-4 px-5 py-2 bg-compost-green text-white rounded-lg hover:bg-compost-dark transition-colors">
+                    Find Services
+                </a>
+            </div>
+
+            <!-- Service Requests List Container -->
+            <div id="service-requests-list" class="space-y-4">
+                <!-- Service request cards will be dynamically inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Placeholder -->
+    <div id="footer"></div>
+
+    <!-- Embedded JavaScript -->
+    <script>
+        $(document).ready(function() {
+
+            // --- Load Header and Footer ---
+            $("#header").load("../../components/header.html", function(response, status, xhr) {
+                if (status == "error") {
+                    console.error("Error loading header:", xhr.status, xhr.statusText);
+                } else {
+                    // Attempt to run checkAuth if it's defined globally (likely by app.js loaded in header)
+                    if (typeof checkAuth === 'function') {
+                        checkAuth();
+                    }
+                }
+            });
+            $("#footer").load("../../components/footer.html", function(response, status, xhr) {
+                 if (status == "error") {
+                    console.error("Error loading footer:", xhr.status, xhr.statusText);
+                 }
+            });
+
+            // --- Fetch and Display Service Requests ---
+            function loadUserRequests() {
+                $("#services-loading").show();
+                $("#no-requests").addClass("hidden");
+                $("#service-requests-list").empty();
+                $("#user-messages").empty(); // Clear previous messages
+
+                $.ajax({
+                    url: "http://localhost/compost_platform/api/user/dashboard.php", // API endpoint created earlier
+                    method: "GET",
+                    xhrFields: { withCredentials: true }, // Send cookies for session auth
+                    dataType: "json", // Expect JSON response
+                    success: function(response) {
+                        $("#services-loading").hide();
+
+                        // Check if the API call was successful and data exists
+                        if (response.status === "success" && response.data && response.data.service_requests) {
+                            const requests = response.data.service_requests;
+                            if (requests.length > 0) {
+                                renderRequests(requests);
+                            } else {
+                                $("#no-requests").removeClass("hidden"); // Show 'no requests' message
+                            }
+                        } else {
+                            // Handle cases where API returns success but no data, or a custom error message
+                            showUserMessage('error', response.message || 'Failed to load requests or no requests found.');
+                            $("#no-requests").removeClass("hidden").find('h4').text('Could not load requests');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        $("#services-loading").hide();
+                        let errorMsg = "An error occurred while fetching your requests. Please try again.";
+                        if (xhr.responseJSON && xhr.responseJSON.message) {
+                            errorMsg = xhr.responseJSON.message; // Use message from API if available
+                        } else if (xhr.status === 401) {
+                            errorMsg = "Authentication failed. Please log in again.";
+                            // Optional: Redirect to login after a delay
+                            setTimeout(() => { window.location.href = '../auth/login.html'; }, 3000);
+                        } else if (xhr.status === 500) {
+                             errorMsg = "A server error occurred. Please try again later.";
+                             // You might get more details from xhr.responseJSON.message if PHP error display is on
+                        }
+                        showUserMessage('error', errorMsg);
+                        $("#no-requests").removeClass("hidden").find('h4').text('Error loading requests');
+                        // console.error("AJAX Error:", xhr.status, error, xhr.responseText); // Log detailed error
+                    }
+                });
+            }
+
+            // --- Render Requests into HTML Cards ---
+            function renderRequests(requests) {
+                const container = $("#service-requests-list");
+                container.empty(); // Clear previous list
+
+                requests.forEach(request => {
+                    // Determine status badge style and icon
+                    let statusClass, statusIcon, statusText;
+                    statusText = request.status ? request.status.charAt(0).toUpperCase() + request.status.slice(1) : 'Unknown';
+
+                    switch(request.status) {
+                        case 'pending':
+                            statusClass = 'status-pending'; statusIcon = 'fa-clock'; break;
+                        case 'accepted':
+                        case 'in-progress': // Visually group these
+                            statusClass = 'status-accepted'; statusIcon = 'fa-spinner fa-spin'; statusText = 'In Progress'; break;
+                        case 'completed':
+                            statusClass = 'status-completed'; statusIcon = 'fa-check-circle'; break;
+                        case 'cancelled':
+                            statusClass = 'status-cancelled'; statusIcon = 'fa-ban'; break;
+                        default:
+                            statusClass = 'status-unknown'; statusIcon = 'fa-question-circle';
+                    }
+
+                    // Format date (basic example)
+                    let formattedDate = 'N/A';
+                    if (request.created_at) {
+                        try {
+                            formattedDate = new Date(request.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+                        } catch(e) { formattedDate = request.created_at; } // Fallback
+                    }
+
+                    // Build the HTML card for the request
+                    const requestCard = `
+                        <div class="border border-gray-200 rounded-lg overflow-hidden bg-white card-shadow request-card" data-request-id="${request.id}">
+                            <div class="p-4">
+                                <div class="flex flex-wrap justify-between items-start mb-2 gap-2">
+                                    <h4 class="font-semibold text-lg text-compost-dark mb-1 md:mb-0">${request.service_title || 'Service Title Unavailable'}</h4>
+                                    <span class="status-badge ${statusClass}">
+                                        <i class="fas ${statusIcon} mr-1.5"></i>
+                                        ${statusText}
+                                    </span>
+                                </div>
+                                <p class="text-sm text-gray-600 mb-1">
+                                    <i class="fas fa-store mr-1.5 text-gray-400"></i>Provider: ${request.provider_name || 'N/A'}
+                                </p>
+                                <p class="text-sm text-gray-600 mb-1">
+                                    <i class="fas fa-map-marker-alt mr-1.5 text-gray-400"></i>Location: ${request.service_location || 'N/A'}
+                                </p>
+                                <p class="text-sm text-gray-500 mb-3">
+                                    <i class="fas fa-calendar-alt mr-1.5 text-gray-400"></i>Requested: ${formattedDate}
+                                </p>
+
+                                <!-- Action Buttons Area -->
+                                <div class="flex flex-col sm:flex-row justify-between items-center border-t border-gray-200 pt-3 mt-3">
+                                    <span class="font-medium text-compost-dark text-lg mb-2 sm:mb-0">
+                                        ${request.service_price ? '$' + parseFloat(request.service_price).toFixed(2) : 'Pricing N/A'}
+                                    </span>
+                                    <div class="flex gap-2">
+                                        ${request.status === 'pending' ? `
+                                            <button class="btn btn-danger cancel-request" data-id="${request.id}">
+                                                <i class="fas fa-times mr-1"></i> Cancel Request
+                                            </button>
+                                        ` : ''}
+                                        ${request.status === 'completed' ? `
+                                            <button class="btn btn-primary leave-review" data-id="${request.id}" data-service-id="${request.service_id}">
+                                                <i class="fas fa-star mr-1"></i> Leave Review
+                                            </button>
+                                        ` : ''}
+                                        <!-- Add other buttons here if needed -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    container.append(requestCard);
+                });
+            }
+
+            // --- Handle Cancel Request Button Click ---
+            // Use event delegation for dynamically added buttons
+            $("#service-requests-list").on('click', '.cancel-request', function() {
+                const $button = $(this); // Reference the button
+                const requestId = $button.data('id');
+                const $card = $button.closest('.request-card'); // Find the parent card
+
+                if (confirm("Are you sure you want to cancel this service request? This action cannot be undone.")) {
+                    // Disable button and show loading state
+                    $button.prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-1"></i> Cancelling...');
+
+                    $.ajax({
+                        url: "http://localhost/compost_platform/api/service/cancel_request.php", // Your cancel endpoint
+                        method: "POST",
+                        contentType: "application/json",
+                        data: JSON.stringify({ request_id: requestId }),
+                        xhrFields: { withCredentials: true }, // Send cookies
+                        dataType: "json",
+                        success: function(response) {
+                            if (response.status === "success") {
+                                showUserMessage('success', response.message || 'Service request cancelled successfully.');
+                                // Update UI directly instead of full reload for better UX
+                                $card.find('.status-badge')
+                                     .removeClass('status-pending')
+                                     .addClass('status-cancelled')
+                                     .html('<i class="fas fa-ban mr-1.5"></i> Cancelled');
+                                $button.remove(); // Remove the cancel button
+                            } else {
+                                // Handle API error message
+                                showUserMessage('error', response.message || 'Failed to cancel request.');
+                                $button.prop('disabled', false).html('<i class="fas fa-times mr-1"></i> Cancel Request'); // Re-enable button
+                            }
+                        },
+                        error: function(xhr) {
+                            let errorMsg = "An error occurred while cancelling. Please try again.";
+                             if (xhr.responseJSON && xhr.responseJSON.message) {
+                                errorMsg = xhr.responseJSON.message;
+                             }
+                            showUserMessage('error', errorMsg);
+                            $button.prop('disabled', false).html('<i class="fas fa-times mr-1"></i> Cancel Request'); // Re-enable button
+                            console.error("Cancel Error:", xhr.status, xhr.responseText);
+                        }
+                    });
+                }
+            });
+
+             // --- Handle Leave Review Button Click ---
+             // Use event delegation
+             $("#service-requests-list").on('click', '.leave-review', function() {
+                const requestId = $(this).data('id');
+                const serviceId = $(this).data('service-id');
+                // Redirect to a review page, passing necessary IDs
+                window.location.href = `../review.html?request_id=${requestId}&service_id=${serviceId}`;
+             });
+
+
+            // --- Utility Function to Show User Messages ---
+            function showUserMessage(type, message) {
+                const messageDiv = `
+                    <div class="p-4 mb-4 rounded-md text-sm ${type === 'success' ? 'bg-green-100 border border-green-300 text-green-800' : 'bg-red-100 border border-red-300 text-red-800'}" role="alert">
+                        <p>${message}</p>
+                    </div>
+                `;
+                // Prepend the message and auto-fade it out
+                $("#user-messages").prepend(messageDiv).children().first().delay(5000).fadeOut(500, function() { $(this).remove(); });
+            }
+
+            // --- Initial Load ---
+            loadUserRequests();
+
+        }); // End document ready
+    </script>
+
+</body>
+</html>
